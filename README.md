@@ -1,2 +1,3 @@
 # top-tic-tac-toe-v2
-The Odin Project assignment -- practicing with factory functions
+
+This is an assignment from <a href="https://www.theodinproject.com/lessons/node-path-javascript-tic-tac-toe">The Odin Project</a> which is meant to provide practice working with factory functions in JS.
