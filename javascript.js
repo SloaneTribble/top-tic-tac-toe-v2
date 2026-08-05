@@ -11,6 +11,8 @@
 
 const gameBoard = (function() {
 
+    const gameBoardDiv = document.getElementById("game-board");
+
     const initialBoardState = ["_","_","_",
                    "_", "_", "_",
                    "_", "_", "_"];
@@ -21,10 +23,13 @@ const gameBoard = (function() {
                    "_", "_", "_"];
 
     const getBoard = () => {
-        console.log(
-            `${_board[0]},${_board[1]},${_board[2]}`,
-            "\n",`${_board[3]},${_board[4]},${_board[5]} `, 
-            "\n",`${_board[6]},${_board[7]},${_board[8]} ` );
+
+        const boardString = 
+        `${_board[0]},${_board[1]},${_board[2]}
+        ${_board[3]},${_board[4]},${_board[5]}
+        ${_board[6]},${_board[7]},${_board[8]} `;
+        gameBoardDiv.innerText = boardString;
+        
     }
 
     const place = (space, symbol) => {
@@ -65,11 +70,11 @@ const gameBoard = (function() {
         }
         // search diagonals
         let topLeft = _board[0];
-        if (topLeft == _board[4] && topLeft == _board[8]){
+        if (topLeft != "_" && topLeft == _board[4] && topLeft == _board[8]){
             return true;
         }
         let topRight = _board[2];
-        if (topRight == _board[4] && topRight == _board[6]){
+        if (topRight != "_" && topRight == _board[4] && topRight == _board[6]){
             return true;
         }
 
@@ -88,48 +93,80 @@ const gameBoard = (function() {
 
 function player(name, symbol){
 
-    let myTurn = (symbol == "X") ? true : false;
-
     return {
         name,
-        symbol,
-        myTurn
+        symbol
     }
 }
 
-function newGame() {
 
-    const firstPlayerName = prompt("First player name: ");
-    const firstPlayerSymbol = prompt("First player symbol: ");
+async function newGame() {
+    
+    async function sleep(){
+        return new Promise((resolve) => setTimeout(resolve, 300));
+    }
+
+    const firstPlayerName = prompt("First player name: ", "Default Danny");
+    const firstPlayerSymbol = prompt("First player symbol: ", "X");
 
     const playerOne = player(firstPlayerName, firstPlayerSymbol);
 
-    const secondPlayerName = prompt("Second player name: ");
+    const secondPlayerName = prompt("Second player name: ", "Default Darry");
     const secondPlayerSymbol = (firstPlayerSymbol == "X") ? "O" : "X";
 
     const playerTwo = player(secondPlayerName, secondPlayerSymbol);
 
     function getPlayerStats(){
         console.log("First player: ");
-        console.log(playerOne.name, playerOne.symbol, playerOne.myTurn);
+        console.log(playerOne.name, playerOne.symbol);
 
         console.log("Second player: ");
-        console.log(playerTwo.name, playerTwo.symbol, playerTwo.myTurn);
+        console.log(playerTwo.name, playerTwo.symbol);
     }
 
+    let gameOver = false;
     let winner;
     let turns = 0;
 
+    // X goes first each round so we put them at the beginning of an array to be iterated through each round
+    const players = (playerOne.symbol == "X") ? [playerOne, playerTwo] : [playerTwo, playerOne];
+    let playerIndex = 0; 
+
+    let currentPlayer, placed, choice;
+    
+
     while(true){
-        if(winner){
-            console.log(`The winner is: ${winner}!`);
-            return;
-        }
         if(turns == 9){
             // no spaces left on the board
             console.log("Tie!");
+            gameBoard.reset();
             return;
         }
+        // each round, X goes first
+        // player choices may not be valid, so let them keep trying
+        while(!placed){
+            currentPlayer = players[playerIndex];
+            choice = prompt(`${currentPlayer.name}'s turn (index 0-8): `);
+            choice = parseInt(choice);
+            placed = gameBoard.place(choice, currentPlayer.symbol);
+        }
+
+        window.requestAnimationFrame(gameBoard.getBoard);
+        await sleep();
+
+        gameOver = gameBoard.checkForWinners();
+        if(gameOver){
+            console.log(`${currentPlayer.name} wins!`);
+            gameBoard.reset();
+            return;
+        }
+        
+        // prepare for the next round
+        placed = false;
+
+        // switch back and forth between 0 and 1 each iteration;
+        playerIndex = (playerIndex == 0) ? 1 : 0;
+        turns++;
         
     }
 
@@ -139,20 +176,8 @@ function newGame() {
 
 }
 
-gameBoard.getBoard();
-gameBoard.place(2, 'X');
-gameBoard.place(4, 'X');
-let win = gameBoard.checkForWinners();
-console.log(win);
-gameBoard.place(6, 'X');
-win = gameBoard.checkForWinners();
-console.log(win);
-
-const newPlayer = player("Will", "O");
-console.log(newPlayer.myTurn, newPlayer.name, newPlayer.symbol);
 
 const game = newGame();
-game.getPlayerStats();
 
 
 
