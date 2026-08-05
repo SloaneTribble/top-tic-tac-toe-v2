@@ -78,8 +78,66 @@ const gameBoard = (function() {
 
     }
 
-    return {getBoard, place, reset, checkForWinners};
+    return {
+        getBoard, 
+        place, 
+        reset, 
+        checkForWinners
+    };
 })();
+
+function player(name, symbol){
+
+    let myTurn = (symbol == "X") ? true : false;
+
+    return {
+        name,
+        symbol,
+        myTurn
+    }
+}
+
+function newGame() {
+
+    const firstPlayerName = prompt("First player name: ");
+    const firstPlayerSymbol = prompt("First player symbol: ");
+
+    const playerOne = player(firstPlayerName, firstPlayerSymbol);
+
+    const secondPlayerName = prompt("Second player name: ");
+    const secondPlayerSymbol = (firstPlayerSymbol == "X") ? "O" : "X";
+
+    const playerTwo = player(secondPlayerName, secondPlayerSymbol);
+
+    function getPlayerStats(){
+        console.log("First player: ");
+        console.log(playerOne.name, playerOne.symbol, playerOne.myTurn);
+
+        console.log("Second player: ");
+        console.log(playerTwo.name, playerTwo.symbol, playerTwo.myTurn);
+    }
+
+    let winner;
+    let turns = 0;
+
+    while(true){
+        if(winner){
+            console.log(`The winner is: ${winner}!`);
+            return;
+        }
+        if(turns == 9){
+            // no spaces left on the board
+            console.log("Tie!");
+            return;
+        }
+        
+    }
+
+    return {
+        getPlayerStats
+    }
+
+}
 
 gameBoard.getBoard();
 gameBoard.place(2, 'X');
@@ -89,5 +147,12 @@ console.log(win);
 gameBoard.place(6, 'X');
 win = gameBoard.checkForWinners();
 console.log(win);
+
+const newPlayer = player("Will", "O");
+console.log(newPlayer.myTurn, newPlayer.name, newPlayer.symbol);
+
+const game = newGame();
+game.getPlayerStats();
+
 
 
