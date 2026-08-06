@@ -1,0 +1,38 @@
+html{
+    box-sizing: border-box;
+}
+*,
+*:before,
+*:after{
+    box-sizing: inherit;
+    max-width: 100%;
+    margin: 0;
+}
+
+#game-board{
+    margin: 0 5vw;
+    display: grid;
+    justify-self: center;
+    row-gap: 1px;
+    column-gap: 2px;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 110vw;
+    max-height: 90vh;
+    min-width: 10vh;
+    min-height: 10vh;
+}
+
+.game-board-cell{
+    background-color: rgb(255, 166, 49);
+    display: flex;
+    justify-content: center;
+    font-size: 5rem;
+    align-items: center;
+    min-height: 10vh;
+    min-width: 10vw;
+    width: 100%;
+    height: auto;
+    max-width: 30vw;
+    border: 1px solid black;
+}

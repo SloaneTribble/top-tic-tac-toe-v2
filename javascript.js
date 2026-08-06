@@ -28,7 +28,6 @@ const gameBoard = (function() {
         `${_board[0]},${_board[1]},${_board[2]}
         ${_board[3]},${_board[4]},${_board[5]}
         ${_board[6]},${_board[7]},${_board[8]} `;
-        gameBoardDiv.innerText = boardString;
         
     }
 
@@ -38,6 +37,8 @@ const gameBoard = (function() {
             return false;
         }
         _board[space] = symbol;
+        const cell = document.getElementById(space.toString());
+        cell.innerText = symbol;
         getBoard();
         return true;
     }
@@ -100,21 +101,30 @@ function player(name, symbol){
 }
 
 
-async function newGame() {
-    
-    async function sleep(){
-        return new Promise((resolve) => setTimeout(resolve, 300));
-    }
+function newGame() {
 
-    const firstPlayerName = prompt("First player name: ", "Default Danny");
-    const firstPlayerSymbol = prompt("First player symbol: ", "X");
+    const turnIndicator = document.getElementById("turn-indicator");
+    
+    // const firstPlayerName = prompt("First player name: ", "Default Danny");
+    // const firstPlayerSymbol = prompt("First player symbol: ", "X");
+
+    const firstPlayerName = "Danny";
+    const firstPlayerSymbol = "X";
+    const secondPlayerName = "Dairy";
 
     const playerOne = player(firstPlayerName, firstPlayerSymbol);
 
-    const secondPlayerName = prompt("Second player name: ", "Default Darry");
+    // const secondPlayerName = prompt("Second player name: ", "Default Darry");
     const secondPlayerSymbol = (firstPlayerSymbol == "X") ? "O" : "X";
 
     const playerTwo = player(secondPlayerName, secondPlayerSymbol);
+
+    let gameOver = false;
+    let winner, placed;
+    let turns = 0;
+
+    // player with X goes first so we set them as the default 
+    let currentPlayer = (playerOne.symbol == "X") ? playerOne : playerTwo;
 
     function getPlayerStats(){
         console.log("First player: ");
@@ -122,37 +132,26 @@ async function newGame() {
 
         console.log("Second player: ");
         console.log(playerTwo.name, playerTwo.symbol);
+
+        console.log(currentPlayer.name, " will go first.");
     }
 
-    let gameOver = false;
-    let winner;
-    let turns = 0;
+    turnIndicator.textContent = currentPlayer.symbol;
 
-    // X goes first each round so we put them at the beginning of an array to be iterated through each round
-    const players = (playerOne.symbol == "X") ? [playerOne, playerTwo] : [playerTwo, playerOne];
-    let playerIndex = 0; 
 
-    let currentPlayer, placed, choice;
-    
+    function gameTurn(spaceThatPlayerClickedOn){
 
-    while(true){
-        if(turns == 9){
-            // no spaces left on the board
-            console.log("Tie!");
-            gameBoard.reset();
-            return;
-        }
-        // each round, X goes first
-        // player choices may not be valid, so let them keep trying
-        while(!placed){
-            currentPlayer = players[playerIndex];
-            choice = prompt(`${currentPlayer.name}'s turn (index 0-8): `);
-            choice = parseInt(choice);
-            placed = gameBoard.place(choice, currentPlayer.symbol);
-        }
+        placed = gameBoard.place(spaceThatPlayerClickedOn, currentPlayer.symbol);
+        // player may have clicked on an occupied space, in which case they should get to try again
+        if (!placed) {return;}
+        
+        // the other player goes next turn;
+        currentPlayer = (currentPlayer == playerOne) ? playerTwo : playerOne;
+        turnIndicator.textContent = currentPlayer.symbol;
+        placed = false;
+        turns++;
 
-        window.requestAnimationFrame(gameBoard.getBoard);
-        await sleep();
+        gameBoard.getBoard();
 
         gameOver = gameBoard.checkForWinners();
         if(gameOver){
@@ -161,23 +160,33 @@ async function newGame() {
             return;
         }
         
-        // prepare for the next round
-        placed = false;
+        if(turns == 9){
+            // no spaces left on the board
+            turnIndicator.textContent = "Tie!";
+            console.log("Tie!");
+            gameBoard.reset();
+            return;
+        }
 
-        // switch back and forth between 0 and 1 each iteration;
-        playerIndex = (playerIndex == 0) ? 1 : 0;
-        turns++;
-        
+
     }
 
     return {
-        getPlayerStats
+        getPlayerStats,
+        gameTurn
     }
 
 }
 
-
 const game = newGame();
+
+const gameBoardDiv = document.getElementById("game-board");
+gameBoardDiv.addEventListener("click", (e) => {
+    const targetCellId = parseInt(e.target.id);
+    game.gameTurn(targetCellId);
+})
+
+
 
 
 
