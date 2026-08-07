@@ -9,10 +9,14 @@
 
 'use strict';
 
+
+
 const gameBoard = (function() {
 
     const gameBoardDiv = document.getElementById("game-board");
 
+    const gameBoardCells = document.querySelectorAll(".game-board-cell");
+    
     const initialBoardState = ["_","_","_",
                    "_", "_", "_",
                    "_", "_", "_"];
@@ -46,7 +50,14 @@ const gameBoard = (function() {
     }
 
     const reset = () => {
-        _board = initialBoardState;
+        _board = [...initialBoardState];
+
+        gameBoardCells.forEach((cell) => {
+        cell.textContent = "";
+
+        getBoard();
+    });
+
     }
 
     // search each column, row and diagonal for straight lines of three matching symbols
@@ -116,6 +127,8 @@ const game = (function() {
 
 
     const newGame = () => {
+
+        gameBoard.reset();
 
         // Game on!
         gameOn = true;
