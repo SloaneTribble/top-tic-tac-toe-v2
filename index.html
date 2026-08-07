@@ -22,9 +22,43 @@
         <li class="game-board-cell" id="8"></li>
     </div>
 
-    <div id="new-game-button-container">
-        <button id="new-game-button">New Game</button>
+    <div id="player-details">
+
+        <form id="player-details-form" action="">
+            <div id="player-one-container">
+                <h3>Player One</h3>
+                
+                <label for="player-one-name">name</label>
+                <input type="text" name="player-one-name" id="player-one-name">
+
+
+            </div>
+            <div id="player-two-container">
+                <h3>Player Two</h3>
+                <label for="player-two-name">name</label>
+                <input type="text" name="player-two-name" id="player-two-name">
+            </div>
+
+            <fieldset>
+                <legend>Who will play as X?</legend>
+                <div>
+                    <input type="radio" id="player-one-x" name="x-player"  value="player-one-x" />
+                    <label id="player-one-x-label" for="player-one-x">J</label>
+                </div>
+                <div>
+                    <input type="radio" id="player-two-x" name="x-player" value="player-two-x /">
+                    <label id="player-two-x-label" for="player-two-x">R</label>
+                </div>
+            </fieldset>
+
+ 
+
+            <button id="new-game-button" type="submit">New Game</button>
+        </form>
+        </div>
     </div>
+
+
     <div id="turn-indicator"></div>
 </body>
 </html>

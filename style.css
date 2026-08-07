@@ -36,3 +36,11 @@ html{
     max-width: 30vw;
     border: 1px solid black;
 }
+
+#player-details{
+    border: 1px solid black;
+}
+
+#player-one-container, #player-two-container{
+    border: 1px solid black;
+}

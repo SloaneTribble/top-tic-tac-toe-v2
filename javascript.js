@@ -28,6 +28,8 @@ const gameBoard = (function() {
         `${_board[0]},${_board[1]},${_board[2]}
         ${_board[3]},${_board[4]},${_board[5]}
         ${_board[6]},${_board[7]},${_board[8]} `;
+
+        console.log(boardString);
         
     }
 
@@ -100,85 +102,124 @@ function player(name, symbol){
     }
 }
 
-
-function newGame() {
+const game = (function() {
 
     const turnIndicator = document.getElementById("turn-indicator");
-    
-    // const firstPlayerName = prompt("First player name: ", "Default Danny");
-    // const firstPlayerSymbol = prompt("First player symbol: ", "X");
-
-    const firstPlayerName = "Danny";
-    const firstPlayerSymbol = "X";
-    const secondPlayerName = "Dairy";
-
-    const playerOne = player(firstPlayerName, firstPlayerSymbol);
-
-    // const secondPlayerName = prompt("Second player name: ", "Default Darry");
-    const secondPlayerSymbol = (firstPlayerSymbol == "X") ? "O" : "X";
-
-    const playerTwo = player(secondPlayerName, secondPlayerSymbol);
 
     let gameOver = false;
     let winner, placed;
-    let turns = 0;
+    let turns = 0 ;
 
-    // player with X goes first so we set them as the default 
-    let currentPlayer = (playerOne.symbol == "X") ? playerOne : playerTwo;
+    let gameOn = false;
 
-    function getPlayerStats(){
-        console.log("First player: ");
-        console.log(playerOne.name, playerOne.symbol);
+    let currentPlayer, playerOne, playerTwo;
 
-        console.log("Second player: ");
-        console.log(playerTwo.name, playerTwo.symbol);
 
-        console.log(currentPlayer.name, " will go first.");
+    const newGame = () => {
+
+        // Game on!
+        gameOn = true;
+
+
+        const playerOneName = document.getElementById("player-one-name").value;
+        console.log("Player one name: ", playerOneName);
+
+        const playerTwoName = document.getElementById("player-two-name").value;
+        console.log("Player two name: ", playerTwoName);
+
+        const playerOneXRadioButton = document.getElementById("player-one-x");
+
+        const playerOneSymbol = playerOneXRadioButton.checked ? "X" : "O";
+
+        const playerTwoSymbol = (playerOneSymbol == "X") ? "O" : "X";
+
+        playerOne = player(playerOneName, playerOneSymbol);
+        playerTwo = player(playerTwoName, playerTwoSymbol);
+
+        gameOver = false;
+        winner = null;
+        placed = false;
+        turns = 0;
+
+
+        // player with X goes first so we set them as the default 
+        currentPlayer = (playerOne.symbol == "X") ? playerOne : playerTwo;
+
+        function getPlayerStats(){
+            console.log("First player: ");
+            console.log(playerOne.name, playerOne.symbol);
+
+            console.log("Second player: ");
+            console.log(playerTwo.name, playerTwo.symbol);
+
+            console.log(currentPlayer.name, " will go first.");
+        }
+
+        getPlayerStats();
+
+        turnIndicator.textContent = currentPlayer.symbol;
+
+        // update DOM to indicate the game's current state -- player names and symbols, and whose turn it is 
+
     }
 
-    turnIndicator.textContent = currentPlayer.symbol;
 
+    const gameTurn = (spaceThatPlayerClickedOn) => {
 
-    function gameTurn(spaceThatPlayerClickedOn){
+        if(!gameOn){
+            return;
+        }
 
         placed = gameBoard.place(spaceThatPlayerClickedOn, currentPlayer.symbol);
         // player may have clicked on an occupied space, in which case they should get to try again
         if (!placed) {return;}
+
         
-        // the other player goes next turn;
-        currentPlayer = (currentPlayer == playerOne) ? playerTwo : playerOne;
-        turnIndicator.textContent = currentPlayer.symbol;
-        placed = false;
-        turns++;
-
-        gameBoard.getBoard();
-
         gameOver = gameBoard.checkForWinners();
         if(gameOver){
             console.log(`${currentPlayer.name} wins!`);
             gameBoard.reset();
+            gameOn = false;
             return;
         }
+
+        turns++;
         
         if(turns == 9){
             // no spaces left on the board
             turnIndicator.textContent = "Tie!";
             console.log("Tie!");
             gameBoard.reset();
+            gameOn = false;
             return;
         }
+
+        // the other player goes next turn;
+        currentPlayer = (currentPlayer == playerOne) ? playerTwo : playerOne;
+        turnIndicator.textContent = currentPlayer.symbol;
+        placed = false;
+
+        gameBoard.getBoard();
+
 
 
     }
 
     return {
-        getPlayerStats,
+        newGame,
         gameTurn
     }
 
-}
 
-const game = newGame();
+})();
+
+
+const playerForm = document.getElementById("player-details-form");
+
+playerForm.addEventListener("submit", (e) =>{
+    e.preventDefault();
+    game.newGame();
+});
 
 const gameBoardDiv = document.getElementById("game-board");
 gameBoardDiv.addEventListener("click", (e) => {
@@ -186,6 +227,22 @@ gameBoardDiv.addEventListener("click", (e) => {
     game.gameTurn(targetCellId);
 })
 
+
+const playerOneXLabel = document.getElementById("player-one-x-label");
+const playerOneNameFormField = document.getElementById("player-one-name");
+
+playerOneNameFormField.addEventListener("input", (e) =>{
+    console.log(playerOneNameFormField.value);
+    playerOneXLabel.textContent = playerOneNameFormField.value;
+});
+
+const playerTwoXLabel = document.getElementById("player-two-x-label");
+const playerTwoNameFormField = document.getElementById("player-two-name");
+
+playerTwoNameFormField.addEventListener("input", (e) =>{
+    console.log(playerTwoNameFormField.value);
+    playerTwoXLabel.textContent = playerTwoNameFormField.value;
+});
 
 
 
