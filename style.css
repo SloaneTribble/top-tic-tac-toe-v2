@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap');
+
+:root{
+    --blue: rgb(81, 255, 223);
+}
+
 html{
     box-sizing: border-box;
 }
@@ -7,19 +13,32 @@ html{
     box-sizing: inherit;
     max-width: 100%;
     margin: 0;
+    font-family: 'Abril Fatface', cursive;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  display: grid;
+  grid-template-rows: auto auto 3fr 1fr auto;
+}
+
+#header{
+    margin: 1rem;
+    font-size: 3rem;
+    text-align: center;
+    background-color: var(--blue);
 }
 
 #game-board{
-    margin: 0 5vw;
+    margin-bottom: 2rem;
     display: grid;
     justify-self: center;
     row-gap: 1px;
     column-gap: 2px;
     grid-template-rows: repeat(3, 1fr);
     grid-template-columns: repeat(3, 1fr);
-    max-width: 110vw;
     max-height: 90vh;
-    min-width: 10vh;
     min-height: 10vh;
 }
 
@@ -30,17 +49,93 @@ html{
     font-size: 5rem;
     align-items: center;
     min-height: 10vh;
-    min-width: 10vw;
+    min-width: 8vw;
     width: 100%;
-    height: auto;
-    max-width: 30vw;
+    max-width: 1rem;
+    max-height: 1.2rem;
     border: 1px solid black;
 }
+
 
 #player-details{
-    border: 1px solid black;
+    border: solid black .1rem;
+
 }
 
-#player-one-container, #player-two-container{
-    border: 1px solid black;
+#player-details, #player-one-container, #player-two-container{
+    padding: .4rem;
 }
+
+#game-info-container, #player-details, footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: fit-content;
+  background: PapayaWhip;
+}
+
+#game-info-container{
+    min-height: 3rem;
+    border: solid black .1rem;
+}
+
+#game-info{
+    background-color: var(--blue);
+    padding: .8rem;
+    border: solid black .2rem;
+
+}
+
+footer{
+    min-height: 1.4rem;
+}
+
+.github-logo {
+    height: 1em;
+    width: auto;
+}
+
+#button-container{
+    display: flex;
+    justify-content: center;
+    padding: .2rem;
+    margin-top: .1rem;
+}
+
+/* from https://getcssscan.com/css-buttons-examples */
+
+.button-89 {
+  --b: 3px;   /* border thickness */
+  --s: .45em; /* size of the corner */
+  --color: #373B44;
+  
+  padding: calc(.5em + var(--s)) calc(.9em + var(--s));
+  color: var(--color);
+  --_p: var(--s);
+  background:
+    conic-gradient(from 90deg at var(--b) var(--b),#0000 90deg,var(--color) 0)
+    var(--_p) var(--_p)/calc(100% - var(--b) - 2*var(--_p)) calc(100% - var(--b) - 2*var(--_p));
+  transition: .3s linear, color 0s, background-color 0s;
+  outline: var(--b) solid #0000;
+  outline-offset: .6em;
+  font-size: 16px;
+
+  border: 0;
+
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-89:hover,
+.button-89:focus-visible{
+  --_p: 0px;
+  outline-color: var(--color);
+  outline-offset: .05em;
+}
+
+.button-89:active {
+  background: var(--color);
+  color: #fff;
+}
+

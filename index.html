@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic-Tac-Toe</title>
+    <title>Tic-tac-toe</title>
     <link rel="stylesheet" href="./style.css">
     <!-- <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon"> -->
     <script src="./javascript.js" defer></script>
 </head>
 <body>
+
+    <div id="header">Tic-tac-toe</div>
 
     <div id="game-board">
         <li class="game-board-cell" id="0"></li>
@@ -51,14 +53,31 @@
                 </div>
             </fieldset>
 
- 
+            <div id="button-container">
+                <button id="new-game-button" type="submit" class="button-89">New Game</button>
+            </div>
 
-            <button id="new-game-button" type="submit">New Game</button>
         </form>
         </div>
     </div>
 
 
-    <div id="game-info"></div>
+    <div id="game-info-container">
+        <div id="game-info">Please enter your names and click "New Game"</div>
+    </div>
+
+    <footer>
+      <p>
+        Copyright ©
+        <script>
+          document.write(new Date().getFullYear());
+        </script>
+        <a href="https://github.com/sloanetribble" target="_blank">
+        Sloane Tribble
+        <img class="github-logo" src="./assets/github-mark.svg" />
+      </a>
+      </p>
+    </footer>
+
 </body>
 </html>
