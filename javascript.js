@@ -63,7 +63,7 @@ const gameBoard = (function() {
     // search each column, row and diagonal for straight lines of three matching symbols
     const checkForWinners = () => {
         // search columns
-        for (let i = 0; i < 2; i++){
+        for (let i = 0; i <= 2; i++){
             let space = _board[i];
             if (space != "_" 
                 && space == _board[i + 3] 
@@ -73,7 +73,7 @@ const gameBoard = (function() {
             }
         }
         // search rows
-        for (let i = 0; i < 2; i+= 3){
+        for (let i = 0; i <= 6; i+= 3){
             let space = _board[i];
             if (space != "_"
                 && space == _board[i + 1]
@@ -115,7 +115,7 @@ function player(name, symbol){
 
 const game = (function() {
 
-    const turnIndicator = document.getElementById("turn-indicator");
+    const gameInfo = document.getElementById("game-info");
 
     let gameOver = false;
     let winner, placed;
@@ -170,7 +170,7 @@ const game = (function() {
 
         getPlayerStats();
 
-        turnIndicator.textContent = currentPlayer.symbol;
+        gameInfo.textContent = `${currentPlayer.name}'s turn`;
 
         // update DOM to indicate the game's current state -- player names and symbols, and whose turn it is 
 
@@ -191,7 +191,7 @@ const game = (function() {
         gameOver = gameBoard.checkForWinners();
         if(gameOver){
             console.log(`${currentPlayer.name} wins!`);
-            gameBoard.reset();
+            gameInfo.textContent = `${currentPlayer.name} wins!`;
             gameOn = false;
             return;
         }
@@ -200,16 +200,15 @@ const game = (function() {
         
         if(turns == 9){
             // no spaces left on the board
-            turnIndicator.textContent = "Tie!";
+            gameInfo.textContent = "Tie!";
             console.log("Tie!");
-            gameBoard.reset();
             gameOn = false;
             return;
         }
 
         // the other player goes next turn;
         currentPlayer = (currentPlayer == playerOne) ? playerTwo : playerOne;
-        turnIndicator.textContent = currentPlayer.symbol;
+        gameInfo.textContent = `${currentPlayer.name}'s turn`;
         placed = false;
 
         gameBoard.getBoard();
@@ -245,7 +244,6 @@ const playerOneXLabel = document.getElementById("player-one-x-label");
 const playerOneNameFormField = document.getElementById("player-one-name");
 
 playerOneNameFormField.addEventListener("input", (e) =>{
-    console.log(playerOneNameFormField.value);
     playerOneXLabel.textContent = playerOneNameFormField.value;
 });
 
@@ -253,7 +251,6 @@ const playerTwoXLabel = document.getElementById("player-two-x-label");
 const playerTwoNameFormField = document.getElementById("player-two-name");
 
 playerTwoNameFormField.addEventListener("input", (e) =>{
-    console.log(playerTwoNameFormField.value);
     playerTwoXLabel.textContent = playerTwoNameFormField.value;
 });
 

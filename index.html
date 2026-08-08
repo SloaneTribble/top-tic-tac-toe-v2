@@ -29,25 +29,25 @@
                 <h3>Player One</h3>
                 
                 <label for="player-one-name">name</label>
-                <input type="text" name="player-one-name" id="player-one-name">
+                <input type="text" name="player-one-name" id="player-one-name" required>
 
 
             </div>
             <div id="player-two-container">
                 <h3>Player Two</h3>
                 <label for="player-two-name">name</label>
-                <input type="text" name="player-two-name" id="player-two-name">
+                <input type="text" name="player-two-name" id="player-two-name" required>
             </div>
 
             <fieldset>
                 <legend>Who will play as X?</legend>
                 <div>
-                    <input type="radio" id="player-one-x" name="x-player"  value="player-one-x" />
-                    <label id="player-one-x-label" for="player-one-x">J</label>
+                    <input type="radio" id="player-one-x" name="x-player"  value="player-one-x" checked/>
+                    <label id="player-one-x-label" for="player-one-x">Player One</label>
                 </div>
                 <div>
                     <input type="radio" id="player-two-x" name="x-player" value="player-two-x /">
-                    <label id="player-two-x-label" for="player-two-x">R</label>
+                    <label id="player-two-x-label" for="player-two-x">Player Two</label>
                 </div>
             </fieldset>
 
@@ -59,6 +59,6 @@
     </div>
 
 
-    <div id="turn-indicator"></div>
+    <div id="game-info"></div>
 </body>
 </html>
