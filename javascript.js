@@ -240,19 +240,18 @@ gameBoardDiv.addEventListener("click", (e) => {
 })
 
 
-const playerOneXLabel = document.getElementById("player-one-x-label");
-const playerOneNameFormField = document.getElementById("player-one-name");
+// pass in either "one" or "two"
+function addFormFieldListener(playerNumber){
+    const playerXLabel = document.getElementById(`player-${playerNumber}-x-label`);
+    const playerNameFormField = document.getElementById(`player-${playerNumber}-name`);
 
-playerOneNameFormField.addEventListener("input", (e) =>{
-    playerOneXLabel.textContent = playerOneNameFormField.value;
-});
+    playerNameFormField.addEventListener("input", (e) =>{
+        playerXLabel.textContent = playerNameFormField.value;
+    });
+}
 
-const playerTwoXLabel = document.getElementById("player-two-x-label");
-const playerTwoNameFormField = document.getElementById("player-two-name");
-
-playerTwoNameFormField.addEventListener("input", (e) =>{
-    playerTwoXLabel.textContent = playerTwoNameFormField.value;
-});
+addFormFieldListener("one");
+addFormFieldListener("two");
 
 
 
